@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">AndersenFragments</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="id">id</string>
+    <string name="name">name</string>
+    <string name="surname">surname</string>
+    <string name="phone">phone</string>
+    <string name="keksik">Keksik</string>
+    <string name="murzik">Murzik</string>
+    <string name="barsik">Barsik</string>
+    <string name="kurlandsky">Kurlandsky</string>
+    <string name="pushik">Pushik</string>
+    <string name="tsarapka">Tsarapka</string>
+    <string name="shurik">Shurik</string>
+    <string name="kote">Kote</string>
+    <string name="the_cat">The Cat</string>
+    <string name="press_to_fill_the_list">Press To Fill The List</string>
+</resources>
