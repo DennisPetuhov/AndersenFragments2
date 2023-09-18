@@ -1,4 +1,4 @@
-package com.example.andersenfragments.Data
+package com.example.andersenfragments2.Data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Cat(
     var id: Int,
     var name: String,
-    var surname:String,
-    var phone:Int,
-    val url:String
-):Parcelable
+    var surname: String,
+    var phone: Int,
+    val url: String
+) : Parcelable

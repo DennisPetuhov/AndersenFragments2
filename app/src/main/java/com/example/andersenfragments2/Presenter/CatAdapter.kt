@@ -5,17 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.andersenfragments.Data.Cat
+import com.example.andersenfragments2.Data.Cat
 import com.example.andersenfragments2.databinding.CatItemBinding
-import com.example.twofragments.ClickFirstFragment
 
-class CatAdapter(private var catList: MutableList<Cat>,private var clickFirstFragment: ClickFirstFragment) :
+class CatAdapter(
+    private var catList: MutableList<Cat>,
+    private var clickFirstFragment: ClickFirstFragment
+) :
     RecyclerView.Adapter<CatAdapter.CatViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
         val binding = CatItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CatViewHolder(binding, clickFirstFragment)
     }
-
 
 
     override fun getItemCount(): Int {
@@ -27,13 +28,12 @@ class CatAdapter(private var catList: MutableList<Cat>,private var clickFirstFra
         holder.bind(catList[position])
         holder.catItemBinding.catItemSingle.setOnLongClickListener {
             clickFirstFragment.deleteCat(item)
-            println("LONGPRESS")
             true
 
 
         }
         holder.catItemBinding.catItemSingle.setOnClickListener {
-            clickFirstFragment?.onClick(item)
+            clickFirstFragment.onClick(item)
         }
     }
 
@@ -47,7 +47,7 @@ class CatAdapter(private var catList: MutableList<Cat>,private var clickFirstFra
     }
 
     class CatViewHolder(
-         val catItemBinding: CatItemBinding,
+        val catItemBinding: CatItemBinding,
         private var clickFirstFragment: ClickFirstFragment?
     ) :
         RecyclerView.ViewHolder(catItemBinding.root) {
@@ -63,7 +63,6 @@ class CatAdapter(private var catList: MutableList<Cat>,private var clickFirstFra
 
 
         }
-
 
 
     }

@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -15,20 +15,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.andersenfragments.Data.Cat
+import com.example.andersenfragments2.Data.Cat
 import com.example.andersenfragments2.R
 import com.example.andersenfragments2.databinding.FragmentFirstBinding
-import com.example.twofragments.ClickFirstFragment
-import com.example.twofragments.SharedViewModel
 import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment(), ClickFirstFragment {
 
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: SharedViewModel by activityViewModels()
-    private val adapter = CatAdapter(mutableListOf<Cat>(), this)
+    private val adapter = CatAdapter(mutableListOf(), this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,14 +38,10 @@ class FirstFragment : Fragment(), ClickFirstFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeChangesOfListOfCat()
         initRecycler()
-        findCatByText()
-        binding.button2.setOnClickListener {
-            viewModel.getCats()
-        }
-
-
+        findCatByTextViaSearchView()
     }
 
     override fun onDestroyView() {
@@ -56,10 +49,17 @@ class FirstFragment : Fragment(), ClickFirstFragment {
         _binding = null
     }
 
-    private fun findCatByText() {
-        binding.editTextText.addTextChangedListener {
-            viewModel.searchCat(it.toString())
-        }
+    private fun findCatByTextViaSearchView() {
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.queryFlow.value = newText
+                return true
+            }
+        })
 
     }
 
@@ -95,7 +95,9 @@ class FirstFragment : Fragment(), ClickFirstFragment {
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
             && !isTablet(requireContext())
         ) {
-            findNavController().navigate(R.id.action_firstFragment_to_secondFragment)
+            findNavController().navigate(
+                R.id.action_firstFragment_to_secondFragment
+            )
         }
 
     }

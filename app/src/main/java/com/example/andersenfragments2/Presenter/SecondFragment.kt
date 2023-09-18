@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,18 +17,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.andersenfragments2.R
 import com.example.andersenfragments2.databinding.FragmentSecondBinding
-import com.example.twofragments.SharedViewModel
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 
 class SecondFragment : Fragment() {
-
-
     private var _binding: FragmentSecondBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SharedViewModel by activityViewModels()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,14 +37,13 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getCatToSecondFragment()
-
         binding.button.setOnClickListener {
             sendCatToFirstFragment()
             navigateToFirstFragment()
         }
 
-
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -75,8 +71,13 @@ class SecondFragment : Fragment() {
     }
 
     private fun navigateToFirstFragment() {
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT && !isTablet(requireContext())) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT && !isTablet(
+                requireContext()
+            )
+        ) {
             findNavController().navigate(R.id.action_secondFragment_to_firstFragment)
+            findNavController().popBackStack(R.id.firstFragment, false)
+
         }
     }
 
@@ -84,6 +85,21 @@ class SecondFragment : Fragment() {
     private fun isTablet(context: Context): Boolean {
         return context.resources
             .configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigate(R.id.firstFragment)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            callback
+        )
     }
 
     companion object {

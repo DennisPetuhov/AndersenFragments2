@@ -35,5 +35,6 @@ class CatDecoration(
         }
     }
 }
-const val PADDING =32
-const val ONE =1
+
+const val PADDING = 32
+const val ONE = 1
